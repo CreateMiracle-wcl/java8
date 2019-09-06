@@ -13,11 +13,14 @@ public class EightQueens {
     private int size;
     private int loopCount;
     private int resolveCount;
-    private int[] queue;//存储八个皇后的列位置，其索引对应行位置
-
+    private int[] seats;//存储八个皇后的列位置，其索引对应行位置
+    /* 注意：
+    *     这里循环和递归都是串行执行的，因此：可以仅用一个数组 seats 分别打印出每种情况
+    * */
+    // private Boolean[][] record; 无法用备忘录去除重复的，因为判断是否重复的条件不能确定（根据前面所有阶段的状态来的）
     public EightQueens(int size) {
         this.size = size;
-        this.queue = new int[size];
+        this.seats = new int[size];
     }
 
     // 首先明确：
@@ -35,21 +38,24 @@ public class EightQueens {
         }
         // 对每一列进行处理
         for (int i = 0; i < size; i++) {
-            queue[n-1] = i;
+            //
+            seats[n-1] = i;
             loopCount++;
-            if (judge(n-1) == true)
+            //
+            if (judge(n-1) == true) {
                 check(n+1);
+            }
         }
     }
     /*
     * judge 对第 n 行的列位置，进行合法性校验，即是否可回溯
-    * n 对应在 queue 上是第 n 个元素
+    * n 对应在 seats 上是第 n 个元素
     * */
     private boolean judge(int n) {
         for (int i = 0; i < n; i++) {
-            // queue[n-1] == queue[i] 同列
-            // (n-i == Math.abs(queue[n-1]-queue[i])) 对象线
-            if (queue[n] == queue[i] || (n-i == Math.abs(queue[n]-queue[i]))) {
+            // seats[n-1] == seats[i] 同列
+            // (n-i == Math.abs(seats[n-1]-seats[i])) 对象线(当前状态与之前状态间的关系)
+            if (seats[n] == seats[i] || (n-i == Math.abs(seats[n]- seats[i]))) {
                 return false;
             }
             //
@@ -61,7 +67,7 @@ public class EightQueens {
     public void print() {
         StringBuffer buffer = new StringBuffer();
         for (int i = 0; i < size; i++) {
-            buffer.append(queue[i] + " ");
+            buffer.append(seats[i] + " ");
         }
         System.out.println(buffer);
         System.out.println("共循环了"+loopCount+"次");
