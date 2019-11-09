@@ -1,4 +1,4 @@
-package xiaoshiyilang.datastructure.src.sparsearray;
+package xiaoshiyilang.datastructure.sparsearray;
 
 /**
  * @program: DateStructure
